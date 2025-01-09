@@ -6,7 +6,7 @@ JOURNAL_FILE="$JOURNAL_DIR/journal.txt"
 ENCRYPTED_FILE="$JOURNAL_DIR/journal.txt.gpg"
 LOG_FILE="$JOURNAL_DIR/journal.log"
 LOG_VIEWER="cat"
-
+MY_EDITOR="nano"
 
 
 # Ensure the JOURNAL_DIR exists
@@ -40,7 +40,7 @@ function edit_journal() {
     fi
 
     # Open the decrypted journal for editing
-    nano "$JOURNAL_FILE"
+    $MY_EDITOR "$JOURNAL_FILE"
     log_action "edit" "User edited the journal."
 
     # Proceed if only user saved the file ( size > 0)
