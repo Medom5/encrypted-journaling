@@ -1,2 +1,5 @@
 # Ignore encrypted journal files
 *.gpg
+
+# Ignore journal log file
+journal.log
