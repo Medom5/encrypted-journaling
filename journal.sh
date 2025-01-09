@@ -51,11 +51,17 @@ function edit_journal() {
 }
 
 function view_journal() {
+    log_action "view" "Starting journal viewing process."
     # Decrypt and display the journal
     if [ -f "$ENCRYPTED_FILE" ]; then
         gpg --pinentry-mode loopback -d "$ENCRYPTED_FILE"
-    else 
-	echo "No encrypted journal found."
+        if [ $? -eq 0]; then
+            log_action "view" "Journal viewed successfully."
+        else
+            log_action "view" "Failed to decrypt journal."
+        fi
+    else
+	    echo "No encrypted journal found."
     fi
 }
 
