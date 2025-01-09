@@ -10,7 +10,7 @@ LOG_VIEWER="cat"
 
 
 # Ensure the JOURNAL_DIR exists
-mkdir -p "$Journal_DIR"
+mkdir -p "$JOURNAL_DIR"
 
 # Logging function
 log_action() {
