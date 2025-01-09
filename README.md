@@ -11,6 +11,7 @@ This Bash script automates the encryption and decryption of a personal journal f
 ## TODO
 
 - [x] Add logging functionality.
+- [ ] Implement automatic date appending when editing the journal.
 - [ ] Implement multiple journal support by allowing users to specify different journal names.
 - [ ] Add an integrity check to ensure journal content remains unaltered.
 - [ ] Enhance error handling with more user-friendly messages.
@@ -23,6 +24,7 @@ This Bash script automates the encryption and decryption of a personal journal f
 Before using this script, make sure you have the following installed:
 
 - [GPG2](https://gnupg.org/)
+
   - On Ubuntu/Debian: `sudo apt install gnupg2`
   - On macOS (using Homebrew): `brew install gnupg`
   - On Arch Linux: `sudo pacman -S gnupg`
@@ -39,9 +41,11 @@ cd encrypted-journaling
 ## Permissions Setup
 
 Ensure the script has execute permissions:
+
 ```bash
 chmod +x journal.sh
 ```
+
 ## Configuration
 
 1. Install GPG2: If you haven't installed GPG2 yet, follow the installation instructions above for your platform.
@@ -55,17 +59,21 @@ chmod +x journal.sh
 ### Editing the Journal
 
 To edit your journal, run:
+
 ```bash
 ./journal.sh edit
 ```
+
 This will decrypt your journal, open it in a text editor, and then re-encrypt it after you save and exit the editor.
 
 ### Viewing the Journal
 
 To view your journal without editing, use:
+
 ```bash
 ./journal.sh view
 ```
+
 This will decrypt and display the journal in the terminal.
 
 ## Logs
