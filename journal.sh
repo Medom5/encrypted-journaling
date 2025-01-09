@@ -5,6 +5,9 @@ JOURNAL_DIR="$HOME/journaling"
 JOURNAL_FILE="$JOURNAL_DIR/journal.txt"
 ENCRYPTED_FILE="$JOURNAL_DIR/journal.txt.gpg"
 LOG_FILE="$JOURNAL_DIR/journal.log"
+LOG_VIEWER="cat"
+
+
 
 # Ensure the JOURNAL_DIR exists
 mkdir -p "$Journal_DIR"
@@ -75,11 +78,15 @@ function view_journal() {
     fi
 }
 
+function view_logs() {
+    $LOG_VIEWER $LOG_FILE 
+}
 
 function usage() {
-    echo "Usage:  $0 [edit|view]"
+    echo "Usage:  $0 [edit|view|logs]"
     echo "  edit: Decrypt and edit the journal."
     echo "  view: Decrypt and view the journal."
+    echo "  logs: View journal logs."
 }
 
 
@@ -92,6 +99,9 @@ case "$1" in
     view)
 	view_journal
 	;;
+    logs)
+    view_logs
+    ;;
     *)
 	usage
 	;;
