@@ -68,7 +68,7 @@ function view_journal() {
     # Decrypt and display the journal
     if [ -f "$ENCRYPTED_FILE" ]; then
         gpg --pinentry-mode loopback -d "$ENCRYPTED_FILE"
-        if [ $? -eq 0]; then
+        if [ $? -eq 0 ]; then
             log_action "view" "Journal viewed successfully."
         else
             log_action "view" "Failed to decrypt journal."
@@ -82,7 +82,7 @@ function view_journal() {
 function view_logs() {
     # Proceed if only log file exists ( size > 0)
     if [ -f "$LOG_FILE" ]; then
-        $LOG_VIEWER $LOG_FILE
+        $LOG_VIEWER "$LOG_FILE"
     else
         echo "No logs found."
     fi
