@@ -18,40 +18,50 @@ log_action() {
 }
 
 function edit_journal() {
+    log_action "edit" "Starting journal editing process."
+
     # Decrypt the journal
     if [ -f "$ENCRYPTED_FILE" ]; then
     	cp "$ENCRYPTED_FILE" "$JOURNAL_DIR/gpg.bak" # Backup current encrypted file
         gpg --pinentry-mode loopback -o "$JOURNAL_FILE" -d "$ENCRYPTED_FILE"
         if [ $? -ne 0 ]; then
-	    echo "Decryption failed. Aborting."
-	    return
-	fi
-    else 
-	echo "No existing journal found. Creating a new one, happy journaling..."
-	sleep 2
+	        log_action "error" "Decryption failed."
+            echo "Decryption failed. Aborting."
+	        return
+	    fi
+        log_action "decrypt" "Decrypted journal file successfully."
+    else
+        log_action "create" "No existing journal found. Creating a new journal."
+	    echo "No existing journal found. Creating a new one, happy journaling..."
+	    sleep 2
     fi
 
     # Open the decrypted journal for editing
     nano "$JOURNAL_FILE"
+    log_action "edit" "User edited the journal."
 
     # Proceed if only user saved the file ( size > 0)
     if [ -f "$JOURNAL_FILE" ] && [ -s "$JOURNAL_FILE" ]; then
         # Re-encrypt journal.txt and overwrite it if already exists
         gpg --yes --pinentry-mode loopback -o "$ENCRYPTED_FILE" -c "$JOURNAL_FILE"
-
         if [ $? -eq 0 ]; then
+	        rm "$JOURNAL_FILE"
+            log_action "encrypt" "Journal encrypted successfully and raw file deleted."
             echo "Journal encrypted successfully."
-	    rm "$JOURNAL_FILE"
         else 
-	    echo "Encryption Failed. Raw file not deleted"
+    	    log_action "error" "Encryption failed. Raw file not deleted."
+            echo "Encryption Failed. Raw file not deleted"
         fi 
     else
-	echo "Journal file is empty or doesn't exist. Not encrypting."
+        log_action "warning" "Journal file is empty or doesn't exist. Not encrypting."
+    	echo "Journal file is empty or doesn't exist. Not encrypting."
     fi
+    log action "edit" "Journal editing process completed."
 }
 
 function view_journal() {
     log_action "view" "Starting journal viewing process."
+    
     # Decrypt and display the journal
     if [ -f "$ENCRYPTED_FILE" ]; then
         gpg --pinentry-mode loopback -d "$ENCRYPTED_FILE"
