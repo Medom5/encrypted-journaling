@@ -74,6 +74,7 @@ function view_journal() {
             log_action "view" "Failed to decrypt journal."
         fi
     else
+        log_action "error" "No encrypted journal found for viewing."
 	    echo "No encrypted journal found."
     fi
 }
