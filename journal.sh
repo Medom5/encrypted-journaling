@@ -59,7 +59,7 @@ function edit_journal() {
         log_action "warning" "Journal file is empty or doesn't exist. Not encrypting."
     	echo "Journal file is empty or doesn't exist. Not encrypting."
     fi
-    log action "edit" "Journal editing process completed."
+    log_action "edit" "Journal editing process completed."
 }
 
 function view_journal() {
