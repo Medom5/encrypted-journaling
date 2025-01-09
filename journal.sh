@@ -81,7 +81,7 @@ function view_journal() {
 
 function view_logs() {
     # Proceed if only log file exists ( size > 0)
-    if[ -f $LOG_FILE ] then;
+    if[ -f $LOG_FILE ]: then
         $LOG_VIEWER $LOG_FILE
     else
         echo "No logs found."
