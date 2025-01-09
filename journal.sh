@@ -16,8 +16,8 @@ mkdir -p "$JOURNAL_DIR"
 log_action() {
     local action="$1" 
     local message="$2" # Optional message
-    local date_format="%Y-%m-%d %H:%M:%S" # YYYY-MM-DD HH:MM:SS 
-    echo "(date +$date_format) [${action^^}]  $message" >> "$LOG_FILE"
+    local date_format="+%Y-%m-%d %H:%M:%S" # YYYY-MM-DD HH:MM:SS 
+    echo "$(date "$date_format") [${action^^}]  $message" >> "$LOG_FILE"
 }
 
 function edit_journal() {
