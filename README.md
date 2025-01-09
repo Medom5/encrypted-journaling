@@ -7,8 +7,14 @@ This Bash script automates the encryption and decryption of a personal journal f
 - **Encrypt/Decrypt Journal**: Easily encrypt or decrypt the journal file using GPG2.
 - **Automatic Backup**: Backs up encrypted files before decrypting.
 - **Logging**: Logs all encryption and decryption activities for debugging and tracking.
-- **File Integrity Check**: Verifies the integrity of the journal file after encryption/decryption.
-- **Multiple Journal Support**: Option to manage multiple journals by specifying different names.
+
+## TODO
+
+- [x] Add logging functionality.
+- [ ] Implement multiple journal support by allowing users to specify different journal names.
+- [ ] Add an integrity check to ensure journal content remains unaltered.
+- [ ] Enhance error handling with more user-friendly messages.
+- [ ] Improve security by storing decrypted files in secure temporary locations (e.g., `/dev/shm`).
 
 ## Installation
 
@@ -26,8 +32,8 @@ Before using this script, make sure you have the following installed:
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/journal.sh.git
-cd journal.sh
+git clone https://github.com/Medom5/encrypted-journaling.git
+cd encrypted-journaling
 ```
 
 ## Permissions Setup
