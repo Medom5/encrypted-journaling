@@ -5,6 +5,9 @@ JOURNAL_DIR="$HOME/journaling"
 JOURNAL_FILE="$JOURNAL_DIR/journal.txt"
 ENCRYPTED_FILE="$JOURNAL_DIR/journal.txt.gpg"
 
+# Ensure the JOURNAL_DIR exists
+mkdir -p "$Journal_DIR"
+
 function edit_journal() {
     # Decrypt the journal
     if [ -f "$ENCRYPTED_FILE" ]; then
