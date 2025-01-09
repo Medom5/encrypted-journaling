@@ -4,9 +4,18 @@
 JOURNAL_DIR="$HOME/journaling"
 JOURNAL_FILE="$JOURNAL_DIR/journal.txt"
 ENCRYPTED_FILE="$JOURNAL_DIR/journal.txt.gpg"
+LOG_FILE="$JOURNAL_DIR/journal.log"
 
 # Ensure the JOURNAL_DIR exists
 mkdir -p "$Journal_DIR"
+
+# Logging function
+log_action() {
+    local action="$1" 
+    local message="$2" # Optional message
+    local date_format="%Y-%m-%d %H:%M:%S" # YYYY-MM-DD HH:MM:SS 
+    echo "(date +$date_format) [${action^^}]  $message" >> "$LOG_FILE"
+}
 
 function edit_journal() {
     # Decrypt the journal
