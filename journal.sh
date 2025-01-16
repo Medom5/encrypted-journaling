@@ -134,11 +134,12 @@ function view_logs() {
 
 function test_journal() {
 	if [ -f "$TESTING_SCRIPT" ]; then
-		log_action "test" "Testing started"
+		log_action "test" "Testing started."
 		bash "$TESTING_SCRIPT"
+		log_action "test" "Testing ended."
 	else
-		log_action "error" "Testing failed to start, file not found"
-		echo "Testing script not found"
+		log_action "error" "Testing failed to start, file not found."
+		echo "Testing script not found."
 	fi
 }
 function usage() {
