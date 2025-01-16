@@ -1,5 +1,9 @@
 # Encrypted Journaling Automation Script
 
+## Demo
+
+<iframe src="https://asciinema.org/a/hCjThgk2M38bkARVKHsAjZyX5" width="600" height="400" frameborder="0" allowfullscreen></iframe>
+
 This Bash script automates the encryption and decryption of a personal journal file using GPG2. It provides a secure and easy way to maintain a private digital journal. The script was originally a personal project that I later developed into something I believe could benefit others while also enhancing my scripting skills.
 
 ## Features
@@ -43,6 +47,7 @@ cd encrypted-journaling
 Ensure the script has execute permissions:
 
 git clone https://github.com/Medom5/encrypted-journaling.git
+
 ```bash
 chmod +x journal.sh
 ```
@@ -97,9 +102,9 @@ Before running the tests, make sure you have the following installed:
 
 - **shunit2**: The testing framework for running bash unit tests.
 
-    - On Ubuntu/Debian: `sudo apt install shunit2`
-    - On macOS (using Homebrew): `brew install shunit2`
-    - On Arch Linux: `sudo pacman -S shunit2`
+  - On Ubuntu/Debian: `sudo apt install shunit2`
+  - On macOS (using Homebrew): `brew install shunit2`
+  - On Arch Linux: `sudo pacman -S shunit2`
 
 - **GPG2**: If you haven't installed GPG2 yet, follow the instructions in the [Installation section](#installation).
 
