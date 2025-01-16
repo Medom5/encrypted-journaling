@@ -1,6 +1,7 @@
 #!/bin/bash
 # journal.sh: Automate GPG2 encryption and decryption for journal file
 
+
 JOURNAL_DIR="$HOME/journaling"
 JOURNAL_FILE="$JOURNAL_DIR/journal.txt"
 ENCRYPTED_FILE="$JOURNAL_DIR/journal.txt.gpg"
@@ -9,6 +10,20 @@ LOG_VIEWER="cat"
 VIEWER="less"
 MY_EDITOR="nano"
 DATE=$(date '+%Y-%m-%d %A | %H:%M')
+
+# don't change the the values(for testing)
+NON_INTERACTIVE_MODE=false
+GPG_PASS=""
+GPG_OPTIONS="--pinentry-mode loopback" # can be changed if you know what you are doing
+
+# Check if NON_INTERACTIVE_MODE is set to true
+if [ "$NON_INTERACTIVE_MODE" == "true" ]; then
+	MY_EDITOR="true" # Skip the editor
+	GPG_PASS="testpass" # Set a test passphrase
+fi
+
+if [ -n "$GPG_PASS" ]; then
+	GPG_OPTIONS="--pinentry-mode loopback --passphrase $GPG_PASSPHRASE"
 
 # Ensure the JOURNAL_DIR exists
 mkdir -p "$JOURNAL_DIR"
@@ -29,8 +44,10 @@ function edit_journal() {
 
     # Decrypt the journal
     if [ -f "$ENCRYPTED_FILE" ]; then
+
     	cp "$ENCRYPTED_FILE" "$JOURNAL_DIR/gpg.bak" # Backup current encrypted file
-        gpg --pinentry-mode loopback -o "$JOURNAL_FILE" -d "$ENCRYPTED_FILE"
+        gpg "$GPG_OPTIONS" -o "$JOURNAL_FILE" -d "$ENCRYPTED_FILE"
+
         if [ $? -ne 0 ]; then
 	        log_action "error" "Decryption failed."
             echo "Decryption failed. Aborting."
@@ -52,7 +69,8 @@ function edit_journal() {
     # Proceed if only user saved the file ( size > 0)
     if [ -f "$JOURNAL_FILE" ] && [ -s "$JOURNAL_FILE" ]; then
         # Re-encrypt journal.txt and overwrite it if already exists
-        gpg --yes --pinentry-mode loopback -o "$ENCRYPTED_FILE" -c "$JOURNAL_FILE"
+        gpg --yes "$GPG_OPTIONS" -o "$ENCRYPTED_FILE" -c "$JOURNAL_FILE"
+
         if [ $? -eq 0 ]; then
 	        rm "$JOURNAL_FILE"
             log_action "encrypt" "Journal encrypted successfully and raw file deleted."
@@ -73,7 +91,7 @@ function view_journal() {
     
     # Decrypt and display the journal
     if [ -f "$ENCRYPTED_FILE" ]; then
-        gpg --pinentry-mode loopback -d "$ENCRYPTED_FILE" | $VIEWER
+        gpg "$GPG_OPTIONS" -d "$ENCRYPTED_FILE" | $VIEWER
         if [ $? -eq 0 ]; then
             log_action "view" "Journal viewed successfully."
         else
