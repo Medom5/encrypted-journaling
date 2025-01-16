@@ -7,7 +7,7 @@ JOURNAL_FILE="$JOURNAL_DIR/journal.txt"
 ENCRYPTED_FILE="$JOURNAL_DIR/journal.txt.gpg"
 LOG_FILE="$JOURNAL_DIR/journal.log"
 LOG_VIEWER="cat"
-VIEWER="cat"
+VIEWER="less"
 MY_EDITOR="nano"
 DATE=$(date '+%Y-%m-%d %A | %H:%M')
 
