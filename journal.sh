@@ -7,29 +7,37 @@ JOURNAL_FILE="$JOURNAL_DIR/journal.txt"
 ENCRYPTED_FILE="$JOURNAL_DIR/journal.txt.gpg"
 LOG_FILE="$JOURNAL_DIR/journal.log"
 LOG_VIEWER="cat"
-VIEWER="less"
+VIEWER="cat"
 MY_EDITOR="nano"
 DATE=$(date '+%Y-%m-%d %A | %H:%M')
 
-# don't change the the values(for testing)
-NON_INTERACTIVE_MODE=false
-GPG_PASS=""
-GPG_OPTIONS="--pinentry-mode loopback" # can be changed if you know what you are doing
-
-# Check if NON_INTERACTIVE_MODE is set to true
-if [ "$NON_INTERACTIVE_MODE" == "true" ]; then
-	MY_EDITOR="true" # Skip the editor
-	GPG_PASS="testpass" # Set a test passphrase
+# Check for GPG2
+if ! command -v gpg2 &> /dev/null; then
+    echo "GPG2 is required but not found. Please install GPG2."
+    exit 1
 fi
 
-if [ -n "$GPG_PASS" ]; then
-	GPG_OPTIONS="--pinentry-mode loopback --passphrase $GPG_PASSPHRASE"
 
 # Ensure the JOURNAL_DIR exists
 mkdir -p "$JOURNAL_DIR"
 
+function gpg_enc() {
+	gpg --yes --pinentry-mode loopback -o "$ENCRYPTED_FILE" -c "$JOURNAL_FILE"
+}
+
+function gpg_dec() {
+	local output_file="$1" # Optional: if set, decrypt ato this file, otherwise output to stdout
+	if [ -z "$output_file" ]; then
+		# No output file provided, so output to stdout for viewing
+		gpg --pinentry-mode loopback -d "$ENCRYPTED_FILE"
+	else
+		# Output to the specified file for editig
+		gpg --pinentry-mode loopback -o "$JOURNAL_FILE" -d "$ENCRYPTED_FILE"
+	fi
+}
+
 # Logging function
-log_action() {
+function log_action() {
     local action="$1" 
     local message="$2" # Optional message
     local date_format="+%Y-%m-%d %H:%M:%S" # YYYY-MM-DD HH:MM:SS 
@@ -44,10 +52,8 @@ function edit_journal() {
 
     # Decrypt the journal
     if [ -f "$ENCRYPTED_FILE" ]; then
-
     	cp "$ENCRYPTED_FILE" "$JOURNAL_DIR/gpg.bak" # Backup current encrypted file
-        gpg "$GPG_OPTIONS" -o "$JOURNAL_FILE" -d "$ENCRYPTED_FILE"
-
+        gpg_dec "$JOURNAL_FILE"
         if [ $? -ne 0 ]; then
 	        log_action "error" "Decryption failed."
             echo "Decryption failed. Aborting."
@@ -62,15 +68,15 @@ function edit_journal() {
 
 	# Appends the current date and time to mark the beginning of each session
 	append_date
+    
     # Open the decrypted journal for editing
     $MY_EDITOR "$JOURNAL_FILE"
     log_action "edit" "User edited the journal."
-
+    
     # Proceed if only user saved the file ( size > 0)
     if [ -f "$JOURNAL_FILE" ] && [ -s "$JOURNAL_FILE" ]; then
         # Re-encrypt journal.txt and overwrite it if already exists
-        gpg --yes "$GPG_OPTIONS" -o "$ENCRYPTED_FILE" -c "$JOURNAL_FILE"
-
+        gpg_enc
         if [ $? -eq 0 ]; then
 	        rm "$JOURNAL_FILE"
             log_action "encrypt" "Journal encrypted successfully and raw file deleted."
@@ -91,7 +97,7 @@ function view_journal() {
     
     # Decrypt and display the journal
     if [ -f "$ENCRYPTED_FILE" ]; then
-        gpg "$GPG_OPTIONS" -d "$ENCRYPTED_FILE" | $VIEWER
+    	gpg_dec | $VIEWER
         if [ $? -eq 0 ]; then
             log_action "view" "Journal viewed successfully."
         else
