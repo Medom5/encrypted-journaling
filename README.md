@@ -112,7 +112,7 @@ git clone https://github.com/Medom5/encrypted-journaling.git
 cd encrypted-journaling
 ```
 
-2. Make the Script Executable:
+2. Make the Scripts Executable:
 
 ```bash
 chmod +x journal.sh ./tests/test_journal.sh
