@@ -9,6 +9,7 @@ LOG_VIEWER="cat"
 VIEWER="less"
 MY_EDITOR="nano"
 DATE=$(date '+%Y-%m-%d %A | %H:%M')
+TESTING_SCRIPT="./tests/test_journal.sh"
 
 GPG_PASS=""
 
@@ -131,11 +132,21 @@ function view_logs() {
     fi
 }
 
+function test_journal() {
+	if [ -f "$TESTING_SCRIPT" ]; then
+		log_action "test" "Testing started"
+		bash "$TESTING_SCRIPT"
+	else
+		log_action "error" "Testing failed to start, file not found"
+		echo "Testing script not found"
+	fi
+}
 function usage() {
-    echo "Usage:  $0 [edit|view|logs]"
+    echo "Usage:  $0 [edit|view|logs|test]"
     echo "  edit: Decrypt and edit the journal."
     echo "  view: Decrypt and view the journal."
     echo "  logs: View journal logs."
+    echo "  test: Run the journal script tests."
 }
 
 # Main
@@ -149,6 +160,9 @@ case "$1" in
     logs)
         view_logs
         ;;
+	test)
+		test_journal
+		;;
     *)
         usage
         ;;
