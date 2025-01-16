@@ -6,8 +6,9 @@ JOURNAL_FILE="$JOURNAL_DIR/journal.txt"
 ENCRYPTED_FILE="$JOURNAL_DIR/journal.txt.gpg"
 LOG_FILE="$JOURNAL_DIR/journal.log"
 LOG_VIEWER="cat"
+VIEWER="less"
 MY_EDITOR="nano"
-
+DATE=$(date '+%Y-%m-%d %A | %H:%M')
 
 # Ensure the JOURNAL_DIR exists
 mkdir -p "$JOURNAL_DIR"
@@ -20,6 +21,9 @@ log_action() {
     echo "$(date "$date_format") [${action^^}]  $message" >> "$LOG_FILE"
 }
 
+function append_date() {
+echo -e "╔═══════════════════════════════╗\n   $DATE \n╚═══════════════════════════════╝" >> "$JOURNAL_FILE"
+}
 function edit_journal() {
     log_action "edit" "Starting journal editing process."
 
@@ -39,6 +43,8 @@ function edit_journal() {
 	    sleep 2
     fi
 
+	# Appends the current date and time to mark the beginning of each session
+	append_date
     # Open the decrypted journal for editing
     $MY_EDITOR "$JOURNAL_FILE"
     log_action "edit" "User edited the journal."
@@ -67,7 +73,7 @@ function view_journal() {
     
     # Decrypt and display the journal
     if [ -f "$ENCRYPTED_FILE" ]; then
-        gpg --pinentry-mode loopback -d "$ENCRYPTED_FILE"
+        gpg --pinentry-mode loopback -d "$ENCRYPTED_FILE" | $VIEWER
         if [ $? -eq 0 ]; then
             log_action "view" "Journal viewed successfully."
         else
