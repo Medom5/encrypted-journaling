@@ -2,7 +2,7 @@
 
 ## Demo
 
-[Project Demo]("https://asciinema.org/a/hCjThgk2M38bkARVKHsAjZyX5")
+[Project Demo](https://asciinema.org/a/hCjThgk2M38bkARVKHsAjZyX5)
 
 This Bash script automates the encryption and decryption of a personal journal file using GPG2. It provides a secure and easy way to maintain a private digital journal. The script was originally a personal project that I later developed into something I believe could benefit others while also enhancing my scripting skills.
 
