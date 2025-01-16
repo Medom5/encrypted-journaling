@@ -5,19 +5,30 @@
 
 SHUNIT2=$(which shunit2)
 
-TEST_DIR="/tmp/journaling_test"
+
+if [ -z "$SHUNIT2" ]; then
+    echo "shunit2 not found. Please install it (e.g., via your package manager)."
+    exit 1
+fi 
 
 # Set up test environment
 function setup() {
 
-    # Clean up old test data
-    rm -rf "$TEST_DIR"
-    mkdir -p "$TEST_DIR"
 
-    # Source the journal script and set the test directory
-    source ./journal.sh
-    export JOURNAL_DIR="$TEST_DIR"  # Override JOURNAL_DIR for tests
-    export GPG_PASS="testpass"      # Set the GPG passphrase for tests
+    # Source the journal script quietly and set the test directory
+    source ./journal.sh > /dev/null 2>&1
+    
+  	export TEST_DIR="/tmp/journaling_test"
+    export JOURNAL_DIR="$TEST_DIR"
+    export JOURNAL_FILE="$JOURNAL_DIR/journal.txt"
+    export ENCRYPTED_FILE="$JOURNAL_DIR/journal.txt.gpg"
+    export LOG_FILE="$JOURNAL_DIR/journal.log"
+    export GPG_PASS="testpass"  # Override passphrase for testing
+
+	# Clean up old test data
+	rm -rf "$TEST_DIR"
+	mkdir -p "$TEST_DIR"
+
 }
 
 function teardown() {
@@ -52,10 +63,11 @@ function test_view_logs() {
 
 function test_usage() {
     output=$(usage)
-    assertTrue "Usage function missing usage information" "echo \"$output\" | grep -q 'Usage:'"
+    echo "$output" | grep -q "Usage:"
+    assertTrue "Usage function missing usage information" "[ $? -eq 0 ]"
 }
 
 # Load shunit2 and run tests
-setup
 trap teardown EXIT  # Ensure cleanup happens at the end
+setup
 . "$SHUNIT2"         # Run the tests
