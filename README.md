@@ -35,7 +35,6 @@ Before using this script, make sure you have the following installed:
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/Medom5/encrypted-journaling.git
 cd encrypted-journaling
 ```
 
@@ -43,6 +42,7 @@ cd encrypted-journaling
 
 Ensure the script has execute permissions:
 
+git clone https://github.com/Medom5/encrypted-journaling.git
 ```bash
 chmod +x journal.sh
 ```
@@ -101,7 +101,7 @@ Before running the tests, make sure you have the following installed:
     - On macOS (using Homebrew): `brew install shunit2`
     - On Arch Linux: `sudo pacman -S shunit2`
 
-- **GPG2**: If you haven't installed GPG2 yet, follow the instructions in the [Installation section](https://github.com/Medom5/encrypted-journaling#installation).
+- **GPG2**: If you haven't installed GPG2 yet, follow the instructions in the [Installation section](#installation).
 
 ## Running Tests
 
