@@ -12,6 +12,7 @@ This Bash script automates the encryption and decryption of a personal journal f
 
 - [x] Add logging functionality.
 - [ ] Implement automatic date appending when editing the journal.
+- [ ] Add a Cleanup Mechanism to Handle Script Interruptions.
 - [ ] Implement multiple journal support by allowing users to specify different journal names.
 - [ ] Add an integrity check to ensure journal content remains unaltered.
 - [ ] Enhance error handling with more user-friendly messages.
