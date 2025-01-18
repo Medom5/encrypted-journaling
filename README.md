@@ -39,14 +39,14 @@ Before using this script, make sure you have the following installed:
 ### Clone the Repository
 
 ```bash
+git clone https://github.com/Medom5/encrypted-journaling.git
+
 cd encrypted-journaling
 ```
 
 ## Permissions Setup
 
 Ensure the script has execute permissions:
-
-git clone https://github.com/Medom5/encrypted-journaling.git
 
 ```bash
 chmod +x journal.sh
